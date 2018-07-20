@@ -33,6 +33,16 @@ schema.methods.generateConfirmationURL = function generateConfirmationURL() {
   return `${process.env.HOST}/confirmation/${this.confirmationToken}`;
 };
 
+schema.methods.generateResetPasswordLink = function generateResetPasswordLink() {
+  return `${process.env.HOST}/reset_password/${this.generateResetPasswordToken()}`;
+};
+
+schema.methods.generateResetPasswordToken = function generateResetPasswordToken() {
+  return jwt.sign({
+    _id: this.id
+  }, process.env.JWT_SECRET, {expiresIn: '1h'});
+};
+
 schema.methods.generateJWT = function generateJWT() {
   return jwt.sign({
     email: this.email,
